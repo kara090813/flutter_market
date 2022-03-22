@@ -1,7 +1,6 @@
 import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:market/router/locations.dart';
-import 'package:market/screens/auth_screen.dart';
 import 'package:market/screens/splash_screen.dart';
 import 'package:market/utils/logger.dart';
 
@@ -27,7 +26,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-        future: Future.delayed(Duration(seconds: 3), () => 100),
+        future: Future.delayed(Duration(seconds: 1), () => 100),
         builder: (context, snapshot) {
           return AnimatedSwitcher(
               duration: Duration(milliseconds: 300),
@@ -56,6 +55,7 @@ class TomatoApp extends StatelessWidget {
       theme: ThemeData(
           primarySwatch: Colors.red,
           secondaryHeaderColor: Colors.blue,
+          hintColor:Colors.grey[350],
           fontFamily: 'DoHyeon',
           textTheme: TextTheme(button: TextStyle(color: Colors.white))),
       routeInformationParser: BeamerParser(),
