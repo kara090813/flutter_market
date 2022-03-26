@@ -2,13 +2,15 @@ import 'package:extended_image/extended_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../../constants/common_size.dart';
+
 class AddressPage extends StatelessWidget {
   const AddressPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      minimum: EdgeInsets.all(16),
+      minimum: EdgeInsets.all(common_padding),
       child: Column(
         children: [
           TextFormField(
@@ -17,7 +19,6 @@ class AddressPage extends StatelessWidget {
                 prefixIconConstraints:
                     BoxConstraints(minWidth: 30, minHeight: 24),
                 hintText: '도로명으로 검색',
-                hintStyle: TextStyle(color: Theme.of(context).hintColor),
                 border: UnderlineInputBorder(
                     borderSide: BorderSide(color: Colors.grey)),
                 focusedBorder: UnderlineInputBorder(
@@ -38,9 +39,6 @@ class AddressPage extends StatelessWidget {
                     '현재위치로 찾기',
                     style: TextStyle(color: Colors.white),
                   ),
-                  style: TextButton.styleFrom(
-                      backgroundColor: Theme.of(context).primaryColor,
-                      padding: EdgeInsets.all(10)),
                 ),
               ],
             ),

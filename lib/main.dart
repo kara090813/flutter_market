@@ -1,19 +1,21 @@
 import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:market/router/locations.dart';
+import 'package:market/screens/auth_page.dart';
 import 'package:market/screens/splash_screen.dart';
+import 'package:market/states/user_provider.dart';
 import 'package:market/utils/logger.dart';
+import 'package:provider/provider.dart';
 
 final _routerDelegate = BeamerDelegate(
-    locationBuilder:
-        BeamerLocationBuilder(beamLocations: [HomeLocation(), AuthLocation()]),
+    locationBuilder: BeamerLocationBuilder(beamLocations: [HomeLocation()]),
     guards: [
       BeamGuard(
-          pathPatterns: ['/'],
+          pathBlueprints: ['/'],
           check: (context, location) {
-            return false;
+            return context.watch<UserProvider>().userState;
           },
-          beamToNamed: (origin, target) => '/auth')
+          showPage: BeamPage(child: StartScreen()))
     ]);
 
 void main() {
@@ -51,15 +53,34 @@ class TomatoApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
-      theme: ThemeData(
+    return ChangeNotifierProvider<UserProvider>(
+      create: (BuildContext context) {
+        return UserProvider();
+      },
+      child: MaterialApp.router(
+        theme: ThemeData(
           primarySwatch: Colors.red,
           secondaryHeaderColor: Colors.blue,
-          hintColor:Colors.grey[350],
+          hintColor: Colors.grey[350],
           fontFamily: 'DoHyeon',
-          textTheme: TextTheme(button: TextStyle(color: Colors.white))),
-      routeInformationParser: BeamerParser(),
-      routerDelegate: _routerDelegate,
+          textButtonTheme: TextButtonThemeData(
+              style: TextButton.styleFrom(
+                  backgroundColor: Colors.red,
+                  primary: Colors.white,
+                  minimumSize: Size(48, 48))),
+          textTheme: TextTheme(
+              button: TextStyle(color: Colors.white),
+              headline5: TextStyle(color: Colors.black),
+              subtitle1: TextStyle(height: 2.2, fontSize: 15)),
+          appBarTheme: AppBarTheme(
+              backgroundColor: Colors.white,
+              elevation: 2,
+              titleTextStyle: TextStyle(
+                  color: Colors.black, fontSize: 22, fontFamily: 'DoHyeon')),
+        ),
+        routeInformationParser: BeamerParser(),
+        routerDelegate: _routerDelegate,
+      ),
     );
   }
 }

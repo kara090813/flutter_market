@@ -1,9 +1,13 @@
+import 'dart:developer';
 import 'dart:ffi';
 
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
+import 'package:market/states/user_provider.dart';
 
+import '../../constants/common_size.dart';
 import '../../utils/logger.dart';
+import 'package:provider/provider.dart';
 
 class IntroPage extends StatelessWidget {
   PageController controller;
@@ -12,6 +16,7 @@ class IntroPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    List<String> _test = ['a','b'];
     return LayoutBuilder(
       builder: (context, constraints) {
         Size size = MediaQuery.of(context).size;
@@ -20,7 +25,7 @@ class IntroPage extends StatelessWidget {
 
         return SafeArea(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
+            padding: const EdgeInsets.symmetric(horizontal: common_padding),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               crossAxisAlignment: CrossAxisAlignment.center,
