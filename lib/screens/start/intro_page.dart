@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'dart:ffi';
 
+import 'package:dio/dio.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:market/states/user_provider.dart';
@@ -66,7 +67,7 @@ class IntroPage extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     TextButton(
-                        onPressed: () {
+                        onPressed: () async{
                           controller.animateToPage(1,
                               duration: Duration(milliseconds: 300),
                               curve: Curves.ease);

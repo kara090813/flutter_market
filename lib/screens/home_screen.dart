@@ -10,11 +10,14 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('메인페이지'),
+        actions:[IconButton(
+          icon: Icon(Icons.logout,color: Colors.black,),
+          onPressed: (){
+          context.read<UserProvider>().setUserAuth(false);
+        },)]
       ),
       body: Column(children: [
-        Center(child: TextButton(onPressed: (){
-          context.read<UserProvider>().setUserAuth(false);
-        }, child:Text('로그아웃')))
+
       ],),
     );
   }

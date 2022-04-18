@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_multi_formatter/flutter_multi_formatter.dart';
@@ -80,6 +82,12 @@ class _AuthPageState extends State<AuthPage> {
                                 _phoneChk = txt.length;
                               });
                             },
+                            enabled: _verificationStatus ==
+                                        VerificationStatus.none ||
+                                    _verificationStatus ==
+                                        VerificationStatus.phoneOk
+                                ? true
+                                : false,
                             controller: _phoneNumberController,
                             keyboardType: TextInputType.phone,
                             inputFormatters: [
@@ -92,6 +100,8 @@ class _AuthPageState extends State<AuthPage> {
                             validator: (phoneNumber) {
                               if (phoneNumber != null &&
                                   phoneNumber.length == 13) {
+                                _verificationStatus =
+                                    VerificationStatus.phoneOk;
                                 return null;
                               } else {
                                 return '전화번호를 정확히 입력해주세요';
@@ -101,8 +111,10 @@ class _AuthPageState extends State<AuthPage> {
                           SizedBox(height: 6),
                           TextButton(
                             onPressed: () {
-                              bool passed = _formKey.currentState!.validate();
-                              if (passed) {
+                              inspect(_formKey.currentState);
+                              _formKey.currentState!.validate();
+                              if (_verificationStatus ==
+                                  VerificationStatus.phoneOk) {
                                 setState(() {
                                   _verificationStatus =
                                       VerificationStatus.codeSent;
@@ -144,6 +156,14 @@ class _AuthPageState extends State<AuthPage> {
                                 border: inputBorder,
                                 focusedBorder: inputBorder,
                               ),
+                              validator: (verifycode) {
+                                if (verifycode != null &&
+                                    verifycode.length == 6) {
+                                  return null;
+                                } else {
+                                  return '인증문자는 6자리입니다';
+                                }
+                              },
                             ),
                             SizedBox(
                               height: 6,
@@ -151,11 +171,16 @@ class _AuthPageState extends State<AuthPage> {
                             TextButton(
                               key: _textButtonKey,
                               onPressed: () {
-                                attemptVerify();
+                                bool passed = _formKey.currentState!.validate();
+                                if (passed) {
+                                  attemptVerify();
+                                }
                               },
                               child: (_verificationStatus ==
                                       VerificationStatus.verifying)
-                                  ? CircularProgressIndicator(color: Colors.white,)
+                                  ? CircularProgressIndicator(
+                                      color: Colors.white,
+                                    )
                                   : Text(
                                       '인증번호 확인',
                                       style: TextStyle(
@@ -178,6 +203,7 @@ class _AuthPageState extends State<AuthPage> {
   double getVerficationHeight(VerificationStatus status) {
     switch (status) {
       case VerificationStatus.none:
+      case VerificationStatus.phoneOk:
         return 0;
         break;
       case VerificationStatus.codeSent:
@@ -203,4 +229,4 @@ class _AuthPageState extends State<AuthPage> {
   }
 }
 
-enum VerificationStatus { none, codeSent, verifying, verficationDone }
+enum VerificationStatus { none, phoneOk, codeSent, verifying, verficationDone }
